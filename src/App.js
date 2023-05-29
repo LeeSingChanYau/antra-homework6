@@ -102,6 +102,7 @@ class App extends React.Component {
               pendingTodos.map((item) => {
                 return (
                   <TodoItem
+                    key={item.id}
                     item={item}
                     handleDelete={this.handleDelete}
                     handleComplete={this.handleComplete}
@@ -116,6 +117,7 @@ class App extends React.Component {
               completedTodos.map((item) => {
                 return (
                   <TodoItem
+                    key={item.id}
                     item={item}
                     handleDelete={this.handleDelete}
                     handleComplete={this.handleComplete}

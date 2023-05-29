@@ -1,14 +1,34 @@
 {
   "todos": [
     {
-      "content": "Chao",
-      "completed": false,
-      "id": 1
-    },
-    {
       "content": "Bye",
       "completed": true,
       "id": 2
+    },
+    {
+      "content": "Hi",
+      "completed": false,
+      "id": 3
+    },
+    {
+      "content": "Done!",
+      "completed": true,
+      "id": 4
+    },
+    {
+      "content": "Not Done",
+      "completed": false,
+      "id": 5
+    },
+    {
+      "content": "Go to hot tub",
+      "completed": false,
+      "id": 6
+    },
+    {
+      "content": "Finish Antra homework",
+      "completed": true,
+      "id": 7
     }
   ]
 }

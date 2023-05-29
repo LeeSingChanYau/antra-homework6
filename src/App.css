@@ -7,7 +7,20 @@ html {
 .root {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 15px;
+}
+
+.todo-input {
+  margin: 20px;
+}
+
+.submit-btn {
+  background-color: rgb(74, 74, 255);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .todolist-container {
@@ -22,14 +35,8 @@ html {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  border: 1px black solid;
+  border: 1px rgba(128, 128, 128, 0.25) solid;
   border-radius: 5px;
-}
-
-.root .todolist-container ul li {
-  display: flex;
-  justify-content: space-between;
-  border: 1px black solid;
-  border-radius: 5px;
-  padding: 10px;
+  width: 500px;
+  height: 800px;
 }

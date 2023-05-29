@@ -1,4 +1,5 @@
 import React from 'react';
+import './TodoItem.css';
 
 class TodoItem extends React.Component {
   constructor() {
@@ -19,6 +20,7 @@ class TodoItem extends React.Component {
 
   render() {
     const { item, handleDelete, handleComplete } = this.props;
+    const arrow = item.completed ? '←' : '→';
     return (
       <li key={item.id}>
         {this.state.showInput ? (
@@ -27,13 +29,15 @@ class TodoItem extends React.Component {
             onChange={(e) => this.setState({ inputValue: e.target.value })}
           />
         ) : (
-          <span>{item.content}</span>
+          <span className="todo-content">{item.content}</span>
         )}
-        <button onClick={(e) => this.onEdit(e, item, this.state.inputValue)}>
-          edit
-        </button>
-        <button onClick={() => handleDelete(item.id)}>remove</button>
-        <button onClick={(e) => handleComplete(e, item)}>complete</button>
+        <div>
+          <button onClick={(e) => this.onEdit(e, item, this.state.inputValue)}>
+            edit
+          </button>
+          <button onClick={() => handleDelete(item.id)}>remove</button>
+          <button onClick={(e) => handleComplete(e, item)}> {arrow} </button>
+        </div>
       </li>
     );
   }

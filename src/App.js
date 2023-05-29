@@ -1,5 +1,7 @@
 import './App.css';
 import React from 'react';
+import { getTodos, postTodo, updateTodo, deleteTodo } from './api/Api';
+import TodoItem from './components/TodoItem/TodoItem';
 
 class App extends React.Component {
   constructor() {
@@ -11,18 +13,12 @@ class App extends React.Component {
     this.URL = 'http://localhost:3000/todos';
   }
 
-  getTodos = () => {
-    return fetch(this.URL).then((data) => data.json());
-  };
-
   handleDelete = (id) => {
-    fetch(this.URL + '/' + id, { method: 'DELETE' })
-      .then((data) => data.json())
-      .then((data) => {
-        this.setState({
-          todos: this.state.todos.filter((item) => item.id !== +id),
-        });
+    deleteTodo(id).then((data) => {
+      this.setState({
+        todos: this.state.todos.filter((item) => item.id !== +id),
       });
+    });
   };
 
   handleOnChange = (e) => {
@@ -31,27 +27,51 @@ class App extends React.Component {
     });
   };
 
-  handleSubmit = () => {
-    console.log(this.state.newTodo);
-    const todoObj = { content: this.state.newTodo };
-    fetch(this.URL, {
-      method: 'POST',
-      body: JSON.stringify(todoObj),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        this.setState({
-          todos: [this.state.newTodo, ...this.state.todos],
-          newTodo: '',
-        });
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const todoObj = { content: this.state.newTodo, completed: false };
+    postTodo(todoObj).then((data) => {
+      this.setState({
+        todos: [data, ...this.state.todos],
+        newTodo: '',
       });
+    });
+  };
+
+  handleComplete = (e, todo) => {
+    e.preventDefault();
+    const todoObj = { ...todo, completed: !todo.completed };
+    updateTodo(todoObj).then((res) => {
+      this.setState({
+        todos: this.state.todos.map((item) => {
+          if (item.id === res.id) {
+            return { ...res };
+          } else {
+            return item;
+          }
+        }),
+      });
+    });
+  };
+
+  handleEdit = (e, todo, input) => {
+    e.preventDefault();
+    const todoObj = { ...todo, content: input };
+    updateTodo(todoObj).then((res) => {
+      this.setState({
+        todos: this.state.todos.map((item) => {
+          if (item.id === res.id) {
+            return { ...res };
+          } else {
+            return item;
+          }
+        }),
+      });
+    });
   };
 
   componentDidMount() {
-    this.getTodos().then((data) => {
+    getTodos().then((data) => {
       data.reverse();
       this.setState({
         todos: data,
@@ -60,6 +80,9 @@ class App extends React.Component {
   }
 
   render() {
+    const { todos } = this.state;
+    const pendingTodos = todos.filter((todo) => todo.completed === false);
+    const completedTodos = todos.filter((todo) => todo.completed === true);
     return (
       <div className="root">
         <form>
@@ -74,18 +97,30 @@ class App extends React.Component {
         </form>
         <div className="todolist-container">
           <ul>
-            {this.state.todos &&
-              this.state.todos.map((item) => {
+            <p>Pending Tasks</p>
+            {pendingTodos &&
+              pendingTodos.map((item) => {
                 return (
-                  <li key={item.id}>
-                    <span>{item.content}</span>
-                    <button
-                      className="delete-btn"
-                      onClick={() => this.handleDelete(item.id)}
-                    >
-                      remove
-                    </button>
-                  </li>
+                  <TodoItem
+                    item={item}
+                    handleDelete={this.handleDelete}
+                    handleComplete={this.handleComplete}
+                    handleEdit={this.handleEdit}
+                  />
+                );
+              })}
+          </ul>
+          <ul>
+            <p>Completed Tasks</p>
+            {completedTodos &&
+              completedTodos.map((item) => {
+                return (
+                  <TodoItem
+                    item={item}
+                    handleDelete={this.handleDelete}
+                    handleComplete={this.handleComplete}
+                    handleEdit={this.handleEdit}
+                  />
                 );
               })}
           </ul>

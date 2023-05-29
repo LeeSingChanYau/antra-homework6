@@ -9,6 +9,12 @@ html {
   flex-direction: column;
   gap: 15px;
 }
+
+.todolist-container {
+  display: flex;
+  gap: 30px;
+}
+
 .root .todolist-container ul {
   padding: 15px;
   margin: 0px;
